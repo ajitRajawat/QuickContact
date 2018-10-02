@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#85000000</color>
+
+    <color name="toolbarColor">#F3F1F1</color>
+    <color name="buttonColor">#E6A0FB</color>
+    <color name="homeinput">#687D44</color>
+    <color name="colorBlack">#000000</color>
+    <color name="lineColor">#d48f61</color>
+    <color name="add_successs">#134469</color>
+    <color name="colorWhite">#ffffff</color>
+
+</resources>
