@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/favourite"
+        android:id="@+id/nav_favourite"
+        android:icon="@drawable/nav_favourites"/>
+
+    <item
+        android:title="@string/Recents"
+        android:id="@+id/nav_recents"
+        android:icon="@drawable/nav_recents"/>
+
+    <item
+        android:title="@string/Phonebook"
+        android:id="@+id/nav_phonebook"
+        android:icon="@drawable/nav_phonebook"/>
+
+</menu>
