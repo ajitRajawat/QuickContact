@@ -1,18 +1,18 @@
 package ajflims.quickcontact;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.support.v4.app.Fragment;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -32,18 +32,18 @@ import java.util.List;
 
 import ajflims.quickcontact.Activities.AddNewActivity;
 import ajflims.quickcontact.Activities.EditContactActivity;
+import ajflims.quickcontact.Fragments.ContactFragment;
+import ajflims.quickcontact.Fragments.FavouriteFragment;
+import ajflims.quickcontact.Fragments.RecentFragment;
 import ajflims.quickcontact.RoomDB.Contact;
 import ajflims.quickcontact.RoomDB.ContactDatabase;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
-    private FloatingActionButton mAddNew;
+    private BottomNavigationView bottomNavigationView;
     public static ContactDatabase myDatabase;
-
     private android.support.v7.widget.Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private ContactAdapter adapter;
-    private List<Contact> mList;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -51,32 +51,17 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        myDatabase = Room.databaseBuilder(getApplicationContext(), ContactDatabase.class,"contactdb").build();
-
-        mAddNew = findViewById(R.id.home_Add);
+        myDatabase = Room.databaseBuilder(HomeActivity.this, ContactDatabase.class,"contactdb").build();
         toolbar = findViewById(R.id.home_toolbar);
-        recyclerView = findViewById(R.id.home_recyclerview);
+
         setSupportActionBar(toolbar);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         permission();
 
-        mAddNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this,AddNewActivity.class));
-            }
-        });
-
-        mList = new ArrayList<>();
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
-
-
-
-        adapter = new ContactAdapter(mList,getApplicationContext());
-        recyclerView.setAdapter(adapter);
-
-        new fetchUser().execute();
+        displayFragment(new FavouriteFragment());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -109,12 +94,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        mList.clear();
-        new fetchUser().execute();
-    }
+
 
 
     @Override
@@ -124,26 +104,7 @@ public class HomeActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-    class fetchUser extends AsyncTask<Void,Void,Void>{
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            List<Contact> list = HomeActivity.myDatabase.contactDao().getContact();
-            for(Contact c : list) {
-                mList.add(c);
-            }
-
-            return null;
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -177,7 +138,7 @@ public class HomeActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               new deleteAllUser().execute();
+              // new FavouriteFragment().execute();
             }
         });
 
@@ -193,25 +154,31 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    class deleteAllUser extends AsyncTask<Void,Void,Void>{
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Toast.makeText(HomeActivity.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
-            mList.clear();
-            adapter.notifyDataSetChanged();
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment f;
+        switch (item.getItemId()){
+            case R.id.nav_favourite:
+                f = new FavouriteFragment();
+                break;
+            case R.id.nav_recents:
+                f = new RecentFragment();
+                break;
+            case R.id.nav_phonebook:
+                f = new ContactFragment();
+                break;
+            default:
+                f = new FavouriteFragment();
         }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            HomeActivity.myDatabase.contactDao().deleteAll(mList);
-
-            return null;
-        }
+        displayFragment(f);
+        return true;
     }
 
+    private void displayFragment(Fragment f) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_area,f).commit();
+    }
 }
 
 
