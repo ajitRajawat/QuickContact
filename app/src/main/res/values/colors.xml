@@ -11,5 +11,27 @@
     <color name="lineColor">#d48f61</color>
     <color name="add_successs">#134469</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="layoutTextColor">#c4000000</color>
 
+    <array name="favouriteBack">
+        <item>@color/back1</item>
+        <item>@color/back2</item>
+        <item>@color/back3</item>
+        <item>@color/back4</item>
+    </array>
+
+    <color name="back1">#CEF6CB</color>
+    <color name="back2">#EED7E5</color>
+    <color name="back3">#D4B2B4</color>
+    <color name="back4">#E2C3E8</color>
+
+    <color name="text1">#5B9756</color>
+    <color name="text2">#B77FA1</color>
+    <color name="text3">#915B5F</color>
+    <color name="text4">#96659F</color>
+
+    <color name="textback1">#915b9756</color>
+    <color name="textback2">#91b77fa1</color>
+    <color name="textback3">#90915b5f</color>
+    <color name="textback4">#9296659f</color>
 </resources>

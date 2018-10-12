@@ -68,20 +68,21 @@ public class FavouriteFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
-
-
-        adapter = new ContactAdapter(mList,getContext());
+        adapter = new ContactAdapter(mList,getActivity());
         recyclerView.setAdapter(adapter);
-
-        new fetchUser().execute();
-
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStop() {
+        super.onStop();
         mList.clear();
-       // new fetchUser().execute();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mList.clear();
+        new fetchUser().execute();
     }
 
     class fetchUser extends AsyncTask<Void,Void,Void> {

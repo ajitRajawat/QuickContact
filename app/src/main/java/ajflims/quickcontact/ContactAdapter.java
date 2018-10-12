@@ -8,12 +8,16 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.List;
+import java.util.Random;
 
 import ajflims.quickcontact.Activities.EditContactActivity;
 import ajflims.quickcontact.RoomDB.Contact;
@@ -42,7 +46,36 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public void onBindViewHolder(ContactViewHolder holder, int position) {
 
         Contact contact = list.get(position);
-        holder.mName.setText(contact.getName());
+        holder.mText.setText(contact.getName());
+        int id = contact.getId();
+        while(id>4){
+            id -= 4;
+        }
+        String name = contact.getName();
+        String s = String.valueOf(name.charAt(0));
+        holder.mLayoutText.setText(s);
+        switch (id){
+            case 0:
+                holder.mRelativeLayout.setBackgroundColor(mCtx.getResources().getColor(R.color.back1));
+                holder.mLayoutText.setTextColor(mCtx.getResources().getColor(R.color.text1));
+                holder.mText.setBackgroundColor(mCtx.getResources().getColor(R.color.textback1));
+                break;
+            case 1:
+                holder.mRelativeLayout.setBackgroundColor(mCtx.getResources().getColor(R.color.back2));
+                holder.mLayoutText.setTextColor(mCtx.getResources().getColor(R.color.text2));
+                holder.mText.setBackgroundColor(mCtx.getResources().getColor(R.color.textback2));
+                break;
+            case 2:
+                holder.mRelativeLayout.setBackgroundColor(mCtx.getResources().getColor(R.color.back3));
+                holder.mLayoutText.setTextColor(mCtx.getResources().getColor(R.color.text3));
+                holder.mText.setBackgroundColor(mCtx.getResources().getColor(R.color.textback3));
+                break;
+            case 3:
+                holder.mRelativeLayout.setBackgroundColor(mCtx.getResources().getColor(R.color.back4));
+                holder.mLayoutText.setTextColor(mCtx.getResources().getColor(R.color.text4));
+                holder.mText.setBackgroundColor(mCtx.getResources().getColor(R.color.textback4));
+                break;
+        }
 
     }
 
@@ -53,14 +86,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     class ContactViewHolder extends RecyclerView.ViewHolder {
 
-        Button mName;
+        RelativeLayout mRelativeLayout;
+        TextView mLayoutText,mText;
 
         public ContactViewHolder(View itemView) {
             super(itemView);
 
-            mName = itemView.findViewById(R.id.home_name);
+            mRelativeLayout = itemView.findViewById(R.id.favourite_back);
+            mLayoutText = itemView.findViewById(R.id.favourite_back_text);
+            mText = itemView.findViewById(R.id.favourite_textview);
 
-            mName.setOnClickListener(new View.OnClickListener() {
+            mRelativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Contact c = list.get(getAdapterPosition());
@@ -79,7 +115,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
                 }
             });
-            mName.setOnLongClickListener(new View.OnLongClickListener() {
+            mRelativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     Contact c = list.get(getAdapterPosition());
