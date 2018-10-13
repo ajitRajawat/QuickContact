@@ -1,7 +1,6 @@
 package ajflims.quickcontact.Fragments;
 
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,11 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ajflims.quickcontact.Activities.AddNewActivity;
-import ajflims.quickcontact.ContactAdapter;
+import ajflims.quickcontact.Adapter.FavouriteAdapter;
 import ajflims.quickcontact.HomeActivity;
 import ajflims.quickcontact.R;
 import ajflims.quickcontact.RoomDB.Contact;
-import ajflims.quickcontact.RoomDB.ContactDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +31,7 @@ public class FavouriteFragment extends Fragment {
     private FloatingActionButton mAddNew;
 
     private RecyclerView recyclerView;
-    private ContactAdapter adapter;
+    private FavouriteAdapter adapter;
     private List<Contact> mList;
 
     public FavouriteFragment() {
@@ -68,7 +66,7 @@ public class FavouriteFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
-        adapter = new ContactAdapter(mList,getActivity());
+        adapter = new FavouriteAdapter(mList,getActivity());
         recyclerView.setAdapter(adapter);
     }
 
