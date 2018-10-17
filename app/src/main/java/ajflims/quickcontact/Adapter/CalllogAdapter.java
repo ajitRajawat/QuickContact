@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +46,15 @@ public class CalllogAdapter extends RecyclerView.Adapter<CalllogAdapter.CalllogA
     public void onBindViewHolder(CalllogAdapterViewHolder holder, int position) {
 
         Calllog c = mList.get(position);
-        holder.mName.setText(c.getName());
+
+        String name = getName(c.getNumber(),mCtx);
+
+        if(name.isEmpty() || name==null){
+            holder.mName.setText(c.getNumber());
+        }else{
+            holder.mName.setText(name);
+
+        }
 
         holder.mNumber.setText("");
         holder.mNumber.append(c.getNumber());
@@ -64,6 +74,25 @@ public class CalllogAdapter extends RecyclerView.Adapter<CalllogAdapter.CalllogA
 
         holder.mInfo.append(" , ");
         holder.mInfo.append(duration);
+    }
+
+    public String getName(final String phoneNuber,Context context){
+
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNuber));
+
+        String []projection =   new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
+
+        String contactName = "";
+        Cursor cursor = context.getContentResolver().query(uri,projection,null,null,null);
+
+        if(cursor!=null){
+            if(cursor.moveToFirst()){
+                contactName = cursor.getString(0);
+            }
+            cursor.close();
+        }
+        return contactName;
+
     }
 
     private String callduration(String callduration) {

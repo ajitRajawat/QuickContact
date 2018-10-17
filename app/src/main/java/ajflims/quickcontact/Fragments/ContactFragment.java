@@ -2,6 +2,7 @@ package ajflims.quickcontact.Fragments;
 
 
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
@@ -15,8 +16,10 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import ajflims.quickcontact.Adapter.ContactAdapter;
+import ajflims.quickcontact.HomeActivity;
 import ajflims.quickcontact.Model.Contact;
 import ajflims.quickcontact.R;
 
@@ -28,7 +31,7 @@ public class ContactFragment extends Fragment {
     private RecyclerView recyclerView;
     private ContactAdapter adapter;
     private List<Contact> mList;
-    String mName=null,mNumber=null;
+    private List<ajflims.quickcontact.RoomDB.Contact> favList;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -49,28 +52,70 @@ public class ContactFragment extends Fragment {
         recyclerView = view.findViewById(R.id.contact_list);
         recyclerView.setHasFixedSize(true);
         mList = new ArrayList<>();
-
-        Cursor phones = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME +" ASC");
-        if (phones != null) {
-            while(phones.moveToNext()){
-                String  name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String  number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                // Log.i("Ajit", "onViewCreated: 11111111");
-               // Log.i("Ajit", "onViewCreated: " + name + "  " +  number);
-                if(!name.equals(mName)&&!number.equals(mNumber)) {
-                    Contact contact = new Contact(name, number);
-                    mList.add(contact);
-                }
-                mName = name;
-                mNumber = number;
-            }
-        }
-        if (phones != null) {
-            phones.close();
-        }
+        favList = new ArrayList<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ContactAdapter(mList,getActivity());
+        adapter = new ContactAdapter(mList,getActivity(),favList);
         recyclerView.setAdapter(adapter);
+
+        try {
+            new checkForFav().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        new ContactFetch().execute();
+    }
+    class checkForFav extends AsyncTask<Void,Void,List<ajflims.quickcontact.RoomDB.Contact>>{
+
+        @Override
+        protected List<ajflims.quickcontact.RoomDB.Contact> doInBackground(Void... voids) {
+            List<ajflims.quickcontact.RoomDB.Contact> list;
+            list = HomeActivity.myDatabase.contactDao().getContact();
+            return list;
+        }
+        @Override
+        protected void onPostExecute(List<ajflims.quickcontact.RoomDB.Contact> contacts) {
+            super.onPostExecute(contacts);
+            for(ajflims.quickcontact.RoomDB.Contact contact : contacts){
+                favList.add(contact);
+            }
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    class ContactFetch extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            String mName=null,mNumber=null;
+            Cursor phones = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME +" ASC");
+            if (phones != null) {
+                while(phones.moveToNext()){
+                    String  name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    String  number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    if(!name.equals(mName)&&!number.equals(mNumber)) {
+                        Contact contact = new Contact(name, number);
+                        mList.add(contact);
+                    }
+                    mName = name;
+                    mNumber = number;
+                }
+            }
+            if (phones != null) {
+                phones.close();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

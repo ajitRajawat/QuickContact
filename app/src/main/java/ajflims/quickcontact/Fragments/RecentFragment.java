@@ -2,9 +2,11 @@ package ajflims.quickcontact.Fragments;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.annotation.Nullable;
@@ -34,7 +36,7 @@ public class RecentFragment extends Fragment {
     private RecyclerView recyclerView;
     private CalllogAdapter adapter;
     private List<Calllog> mList;
-    int calllog_count = 0 ;
+    int calllog_count = 0;
 
     public RecentFragment() {
         // Required empty public constructor
@@ -58,49 +60,60 @@ public class RecentFragment extends Fragment {
         calllog_count = 0;
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-            Log.i("Ajit", "onViewCreated: 111");
             return;
-        }
-        Cursor cursor = getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI,
-                null, null, null, CallLog.Calls.DATE + " DESC");
-
-        int number = cursor.getColumnIndex(CallLog.Calls.NUMBER);
-        int duration = cursor.getColumnIndex(CallLog.Calls.DURATION);
-        int type = cursor.getColumnIndex(CallLog.Calls.TYPE);
-        int date = cursor.getColumnIndex(CallLog.Calls.DATE);
-        while(cursor.moveToNext()){
-            if(calllog_count==40){
-                break;
-            }
-            calllog_count++;
-            String num = cursor.getString(number);
-            String calltype = cursor.getString(type);
-            String callduration = cursor.getString(duration);
-            String calldate = cursor.getString(date);
-            String callType = null;
-            int dir = Integer.parseInt(calltype);
-            switch (dir){
-                case CallLog.Calls.OUTGOING_TYPE:
-                    callType = "OUTGOING";
-                    break;
-                case CallLog.Calls.INCOMING_TYPE:
-                    callType = "INCOMING";
-                    break;
-                case CallLog.Calls.MISSED_TYPE:
-                    callType = "MISSED";
-                    break;
-                default:
-                    callType = "CALLED";
-            }
-            Log.i("Ajit", "onViewCreated: "+num+"  " + calldate + "  " + callType);
-            Calllog calllog = new Calllog("QuickContact",num,calldate,callType,callduration);
-            mList.add(calllog);
+        }else{
+            new CallLogFetch().execute();
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new CalllogAdapter(mList,getActivity());
+        adapter = new CalllogAdapter(mList, getActivity());
         recyclerView.setAdapter(adapter);
 
+    }
+
+    class CallLogFetch extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void...voids) {
+
+             @SuppressLint("MissingPermission") Cursor cursor = getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI,
+                        null, null, null, CallLog.Calls.DATE + " DESC");
+
+            int number = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+            int duration = cursor.getColumnIndex(CallLog.Calls.DURATION);
+            int type = cursor.getColumnIndex(CallLog.Calls.TYPE);
+            int date = cursor.getColumnIndex(CallLog.Calls.DATE);
+            while (cursor.moveToNext()) {
+                String num = cursor.getString(number);
+                String calltype = cursor.getString(type);
+                String callduration = cursor.getString(duration);
+                String calldate = cursor.getString(date);
+                String callType = null;
+                int dir = Integer.parseInt(calltype);
+                switch (dir) {
+                    case CallLog.Calls.OUTGOING_TYPE:
+                        callType = "OUTGOING";
+                        break;
+                    case CallLog.Calls.INCOMING_TYPE:
+                        callType = "INCOMING";
+                        break;
+                    case CallLog.Calls.MISSED_TYPE:
+                        callType = "MISSED";
+                        break;
+                    default:
+                        callType = "CALLED";
+                }
+                Calllog calllog = new Calllog("QuickContact", num, calldate, callType, callduration);
+                mList.add(calllog);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            adapter.notifyDataSetChanged();
+        }
     }
 }
 
