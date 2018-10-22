@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#4DD0E1</color>
+    <color name="colorPrimaryDark">#01b4ca</color>
     <color name="colorAccent">#85000000</color>
 
     <color name="toolbarColor">#F3F1F1</color>
@@ -12,6 +12,8 @@
     <color name="add_successs">#134469</color>
     <color name="colorWhite">#ffffff</color>
     <color name="layoutTextColor">#c4000000</color>
+    <color name="view">#2c000000</color>
+    <color name="contactText">#b0000000</color>
 
     <array name="favouriteBack">
         <item>@color/back1</item>

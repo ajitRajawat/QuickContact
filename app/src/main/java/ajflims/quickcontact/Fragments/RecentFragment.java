@@ -14,18 +14,22 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ajflims.quickcontact.Adapter.CalllogAdapter;
 import ajflims.quickcontact.Adapter.ContactAdapter;
 import ajflims.quickcontact.Model.Calllog;
 import ajflims.quickcontact.Model.Contact;
+import ajflims.quickcontact.Model.GetTimeAlgo;
 import ajflims.quickcontact.R;
 
 /**
@@ -37,6 +41,7 @@ public class RecentFragment extends Fragment {
     private CalllogAdapter adapter;
     private List<Calllog> mList;
     int calllog_count = 0;
+    private ProgressBar mProgress;
 
     public RecentFragment() {
         // Required empty public constructor
@@ -55,13 +60,15 @@ public class RecentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.calllog_recyclerview);
+        mProgress = view.findViewById(R.id.calllog_progress);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
         mList = new ArrayList<>();
         calllog_count = 0;
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
             return;
-        }else{
+        } else {
             new CallLogFetch().execute();
         }
 
@@ -74,17 +81,33 @@ public class RecentFragment extends Fragment {
     class CallLogFetch extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected Void doInBackground(Void...voids) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgress.setVisibility(View.VISIBLE);
+        }
 
-             @SuppressLint("MissingPermission") Cursor cursor = getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI,
-                        null, null, null, CallLog.Calls.DATE + " DESC");
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+                return null;
+            }
+            Cursor cursor = getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI,
+                    null, null, null, CallLog.Calls.DATE + " DESC");
 
             int number = cursor.getColumnIndex(CallLog.Calls.NUMBER);
             int duration = cursor.getColumnIndex(CallLog.Calls.DURATION);
             int type = cursor.getColumnIndex(CallLog.Calls.TYPE);
             int date = cursor.getColumnIndex(CallLog.Calls.DATE);
+            int name = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+            String n = "";
             while (cursor.moveToNext()) {
                 String num = cursor.getString(number);
+                if(num.equals(n)){
+                    continue;
+                }
+                n=num;
+                String userName = cursor.getString(name);
                 String calltype = cursor.getString(type);
                 String callduration = cursor.getString(duration);
                 String calldate = cursor.getString(date);
@@ -103,9 +126,19 @@ public class RecentFragment extends Fragment {
                     default:
                         callType = "CALLED";
                 }
-                Calllog calllog = new Calllog("QuickContact", num, calldate, callType, callduration);
+
+                Date d = new Date(Long.parseLong(calldate));
+                String dateTime = String.valueOf(d.getTime());
+
+                GetTimeAlgo getTimeAlgo = new GetTimeAlgo();
+                String time = getTimeAlgo.getTimeAgo(Long.parseLong(dateTime),getContext());
+
+                String dur = callduration(String.valueOf(callduration));
+
+                Calllog calllog = new Calllog(userName, num, time, callType, dur);
                 mList.add(calllog);
             }
+            cursor.close();
             return null;
         }
 
@@ -113,7 +146,30 @@ public class RecentFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             adapter.notifyDataSetChanged();
+            mProgress.setVisibility(View.INVISIBLE);
         }
+    }
+    private String callduration(String callduration) {
+        String duration = "";
+        int minutes = 0;
+        int sec = 0;
+        int call = Integer.parseInt(callduration);
+        if(call >=60){
+            while(call>=60){
+                call -= 60;
+                minutes++;
+            }
+            sec = call;
+        }else{
+            sec = call;
+        }
+        if(minutes != 0){
+            duration = String.valueOf(minutes) + "m" + String.valueOf(sec) + "s";
+        }else{
+            duration = String.valueOf(sec);
+            duration = duration + "s";
+        }
+        return duration;
     }
 }
 

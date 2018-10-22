@@ -20,6 +20,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="qc">QC</string>
-    <string name="_1234567890">1234567890</string>
     <string name="callType">Call Type</string>
+    <string name="SearchContact">Search Contact</string>
+    <string name="_1234567890">1234567890</string>
 </resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ajflims.quickcontact.Activities.SearchActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:id="@+id/search_appbar"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:id="@+id/search_toolbar"
+            android:layout_height="wrap_content"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:background="@color/colorPrimary"
+            app:title="@string/app_name">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/search_back_button"
+                    android:src="@drawable/back_button"/>
+
+                <SearchView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="-16dp"
+                    android:paddingStart="-16dp"
+                    android:iconifiedByDefault="false"
+                    android:focusable="true"
+                    android:queryBackground="@color/colorPrimary"
+                    android:id="@+id/toolbar_searchView"
+                    android:background="@color/colorPrimary"
+                    android:queryHint="@string/SearchContact"
+                    tools:ignore="RtlSymmetry">
+
+                </SearchView>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/search_list"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_appbar">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

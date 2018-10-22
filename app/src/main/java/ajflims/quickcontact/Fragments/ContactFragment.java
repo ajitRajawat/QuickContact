@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -115,6 +118,12 @@ public class ContactFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Collections.sort(mList, new Comparator<Contact>() {
+                @Override
+                public int compare(Contact o1, Contact o2) {
+                    return o1.getName().compareToIgnoreCase(o2.getName());
+                }
+            });
             adapter.notifyDataSetChanged();
         }
     }

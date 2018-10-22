@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ajflims.quickcontact">
 
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <application
         android:allowBackup="true"
@@ -23,8 +23,10 @@
         <activity
             android:name=".Activities.AddNewActivity"
             android:theme="@style/StatusBar" />
-        <activity android:name=".Activities.EditContactActivity"
-            android:theme="@style/StatusBar"></activity>
+        <activity
+            android:name=".Activities.EditContactActivity"
+            android:theme="@style/StatusBar" />
+        <activity android:name=".Activities.SearchActivity"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package ajflims.quickcontact;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
@@ -24,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -32,18 +35,19 @@ import java.util.List;
 
 import ajflims.quickcontact.Activities.AddNewActivity;
 import ajflims.quickcontact.Activities.EditContactActivity;
+import ajflims.quickcontact.Activities.SearchActivity;
 import ajflims.quickcontact.Fragments.ContactFragment;
 import ajflims.quickcontact.Fragments.FavouriteFragment;
 import ajflims.quickcontact.Fragments.RecentFragment;
 import ajflims.quickcontact.RoomDB.Contact;
 import ajflims.quickcontact.RoomDB.ContactDatabase;
 
-public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,BottomNavigationView.OnNavigationItemReselectedListener{
 
     private BottomNavigationView bottomNavigationView;
     public static ContactDatabase myDatabase;
     private android.support.v7.widget.Toolbar toolbar;
-
+    private LinearLayout mSarchLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -58,10 +62,20 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setOnNavigationItemReselectedListener(this);
+        mSarchLayout = findViewById(R.id.home_search_layout);
 
         permission();
 
         displayFragment(new FavouriteFragment());
+
+        mSarchLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this,SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -76,14 +90,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
             return;
         }
-        else{
-            //Toasty.success(getActivity(),"Done",Toast.LENGTH_SHORT).show();
-        }
-
-
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -93,9 +100,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                     return;
         }
     }
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -178,6 +182,20 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     private void displayFragment(Fragment f) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_area,f).commit();
+    }
+
+    @Override
+    public void onNavigationItemReselected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_favourite:
+                break;
+            case R.id.nav_recents:
+                break;
+            case R.id.nav_phonebook:
+                break;
+            default:
+        }
+
     }
 }
 

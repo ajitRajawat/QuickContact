@@ -9,9 +9,11 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -46,76 +48,39 @@ public class CalllogAdapter extends RecyclerView.Adapter<CalllogAdapter.CalllogA
     public void onBindViewHolder(CalllogAdapterViewHolder holder, int position) {
 
         Calllog c = mList.get(position);
-
-        String name = getName(c.getNumber(),mCtx);
-
-        if(name.isEmpty() || name==null){
+        String name = c.getName();
+        if(TextUtils.isEmpty(name)){
             holder.mName.setText(c.getNumber());
-        }else{
+        }else {
             holder.mName.setText(name);
-
         }
 
         holder.mNumber.setText("");
         holder.mNumber.append(c.getNumber());
-        holder.mNumber.append(" , ");
-        holder.mNumber.append(c.getCalltype());
 
-        Date date = new Date(Long.valueOf(c.getCalldate()));
-        String dateTime = String.valueOf(date.getTime());
+        String type = c.getCalltype();
+        switch (type){
+            case "MISSED" :
+                holder.mCallType.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.missed_call));
+                break;
+            case "INCOMING" :
+                holder.mCallType.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.incoming_call));
+                break;
+            case "OUTGOING" :
+                holder.mCallType.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.outgoing_call));
+                break;
+            default:
+                holder.mCallType.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.missed_call));
+        }
 
-        GetTimeAlgo getTimeAlgo = new GetTimeAlgo();
-        String time = getTimeAlgo.getTimeAgo(Long.parseLong(dateTime),mCtx);
-
+        String time = c.getCalldate();
         holder.mInfo.setText("");
         holder.mInfo.append(time);
 
-        String duration = callduration(c.getCallduration());
+        String duration = c.getCallduration();
 
         holder.mInfo.append(" , ");
         holder.mInfo.append(duration);
-    }
-
-    public String getName(final String phoneNuber,Context context){
-
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNuber));
-
-        String []projection =   new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
-
-        String contactName = "";
-        Cursor cursor = context.getContentResolver().query(uri,projection,null,null,null);
-
-        if(cursor!=null){
-            if(cursor.moveToFirst()){
-                contactName = cursor.getString(0);
-            }
-            cursor.close();
-        }
-        return contactName;
-
-    }
-
-    private String callduration(String callduration) {
-        String duration = "";
-        int minutes = 0;
-        int sec = 0;
-        int call = Integer.parseInt(callduration);
-        if(call >=60){
-            while(call>=60){
-                call -= 60;
-                minutes++;
-            }
-            sec = call;
-        }else{
-            sec = call;
-        }
-        if(minutes != 0){
-            duration = String.valueOf(minutes) + "m" + String.valueOf(sec) + "s";
-        }else{
-            duration = String.valueOf(sec);
-            duration = duration + "s";
-        }
-        return duration;
     }
 
     @Override
@@ -125,19 +90,20 @@ public class CalllogAdapter extends RecyclerView.Adapter<CalllogAdapter.CalllogA
 
     class CalllogAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        CircleImageView mProfile, mCall;
+        CircleImageView mProfile;
+        ImageView mCallType;
         TextView mName, mNumber, mInfo;
 
         public CalllogAdapterViewHolder(View itemView) {
             super(itemView);
 
             mProfile = itemView.findViewById(R.id.calllog_profile);
-            mCall = itemView.findViewById(R.id.calllog_call);
             mName = itemView.findViewById(R.id.calllog_name);
             mNumber = itemView.findViewById(R.id.calllog_number);
             mInfo = itemView.findViewById(R.id.calllog_info);
+            mCallType = itemView.findViewById(R.id.calllog_calltype);
 
-            mCall.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calllog c = mList.get(getAdapterPosition());
