@@ -2,6 +2,7 @@ package ajflims.quickcontact.Fragments;
 
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -69,7 +71,7 @@ public class ContactFragment extends Fragment {
             e.printStackTrace();
         }
 
-        new ContactFetch().execute();
+       // new ContactFetch().execute();
     }
     class checkForFav extends AsyncTask<Void,Void,List<ajflims.quickcontact.RoomDB.Contact>>{
 
@@ -98,10 +100,12 @@ public class ContactFragment extends Fragment {
             Cursor phones = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME +" ASC");
             if (phones != null) {
                 while(phones.moveToNext()){
+                    String id = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+                    String key = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY));
                     String  name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                     String  number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     if(!name.equals(mName)&&!number.equals(mNumber)) {
-                        Contact contact = new Contact(name, number);
+                         Contact contact = new Contact(name,number,id,key,"");
                         mList.add(contact);
                     }
                     mName = name;
@@ -127,4 +131,13 @@ public class ContactFragment extends Fragment {
             adapter.notifyDataSetChanged();
         }
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mList.clear();
+        new ContactFetch().execute();
+    }
+
 }

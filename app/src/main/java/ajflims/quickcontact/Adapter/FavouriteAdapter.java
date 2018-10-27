@@ -118,19 +118,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Cont
 
                 }
             });
-            mRelativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Contact c = list.get(getAdapterPosition());
-                    Intent intent = new Intent(mCtx, EditContactActivity.class);
-                    intent.putExtra("name",c.getName());
-                    intent.putExtra("number",c.getNumber());
-                    intent.putExtra("id",c.getId());
-                    mCtx.startActivity(intent);
-                    return true;
-                }
-            });
-
         }
     }
 

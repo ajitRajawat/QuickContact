@@ -4,10 +4,10 @@ package ajflims.quickcontact.Model;
  * Created by ajit on 10/13/2018.
  */
 
-public class Calllog {
+public class CallLog {
     String name,number,calldate,calltime,calltype,callduration;
 
-    public Calllog(String name, String number, String calldate, String calltype, String callduration) {
+    public CallLog(String name, String number, String calldate, String calltype, String callduration) {
         this.name = name;
         this.number = number;
         this.calldate = calldate;

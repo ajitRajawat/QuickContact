@@ -146,7 +146,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                     String  name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                     String  number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     if(!name.equals(mName)&&!number.equals(mNumber)) {
-                        Contact contact = new Contact(name, number);
+                        Contact contact = new Contact(name, number,"","","");
                         mList.add(contact);
                     }
                     mName = name;

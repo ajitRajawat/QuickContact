@@ -28,8 +28,6 @@ import ajflims.quickcontact.RoomDB.Contact;
  */
 public class FavouriteFragment extends Fragment {
 
-    private FloatingActionButton mAddNew;
-
     private RecyclerView recyclerView;
     private FavouriteAdapter adapter;
     private List<Contact> mList;
@@ -50,17 +48,7 @@ public class FavouriteFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-        mAddNew = view.findViewById(R.id.home_Add);
         recyclerView = view.findViewById(R.id.favourite_recyclerview);
-
-        mAddNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(),AddNewActivity.class));
-            }
-        });
 
         mList = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
@@ -96,15 +84,13 @@ public class FavouriteFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
             List<Contact> list = HomeActivity.myDatabase.contactDao().getContact();
-            for(Contact c : list) {
-                mList.add(c);
-            }
+            mList.addAll(list);
 
             return null;
         }
     }
 
-    class  deleteAllUser extends AsyncTask<Void,Void,Void>{
+     class deleteAllUser extends AsyncTask<Void,Void,Void>{
 
         @Override
         protected void onPostExecute(Void aVoid) {

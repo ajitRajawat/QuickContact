@@ -6,11 +6,14 @@ package ajflims.quickcontact.Model;
 
 public class Contact {
 
-    private String name,number;
+    private String name,number,id,key,image;
 
-    public Contact(String name, String number) {
+    public Contact(String name, String number, String id, String key, String image) {
         this.name = name;
         this.number = number;
+        this.id = id;
+        this.key = key;
+        this.image = image;
     }
 
     public String getName() {
@@ -27,5 +30,29 @@ public class Contact {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

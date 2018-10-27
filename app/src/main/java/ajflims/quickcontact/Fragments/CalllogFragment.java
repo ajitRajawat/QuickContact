@@ -2,20 +2,15 @@ package ajflims.quickcontact.Fragments;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.CallLog;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,24 +21,22 @@ import java.util.Date;
 import java.util.List;
 
 import ajflims.quickcontact.Adapter.CalllogAdapter;
-import ajflims.quickcontact.Adapter.ContactAdapter;
-import ajflims.quickcontact.Model.Calllog;
-import ajflims.quickcontact.Model.Contact;
+import ajflims.quickcontact.Model.CallLog;
 import ajflims.quickcontact.Model.GetTimeAlgo;
 import ajflims.quickcontact.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecentFragment extends Fragment {
+public class CalllogFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private CalllogAdapter adapter;
-    private List<Calllog> mList;
+    private List<CallLog> mList;
     int calllog_count = 0;
     private ProgressBar mProgress;
 
-    public RecentFragment() {
+    public CalllogFragment() {
         // Required empty public constructor
     }
 
@@ -92,14 +85,14 @@ public class RecentFragment extends Fragment {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
                 return null;
             }
-            Cursor cursor = getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI,
-                    null, null, null, CallLog.Calls.DATE + " DESC");
+            Cursor cursor = getContext().getContentResolver().query(android.provider.CallLog.Calls.CONTENT_URI,
+                    null, null, null, android.provider.CallLog.Calls.DATE + " DESC");
 
-            int number = cursor.getColumnIndex(CallLog.Calls.NUMBER);
-            int duration = cursor.getColumnIndex(CallLog.Calls.DURATION);
-            int type = cursor.getColumnIndex(CallLog.Calls.TYPE);
-            int date = cursor.getColumnIndex(CallLog.Calls.DATE);
-            int name = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+            int number = cursor.getColumnIndex(android.provider.CallLog.Calls.NUMBER);
+            int duration = cursor.getColumnIndex(android.provider.CallLog.Calls.DURATION);
+            int type = cursor.getColumnIndex(android.provider.CallLog.Calls.TYPE);
+            int date = cursor.getColumnIndex(android.provider.CallLog.Calls.DATE);
+            int name = cursor.getColumnIndex(android.provider.CallLog.Calls.CACHED_NAME);
             String n = "";
             while (cursor.moveToNext()) {
                 String num = cursor.getString(number);
@@ -114,13 +107,13 @@ public class RecentFragment extends Fragment {
                 String callType = null;
                 int dir = Integer.parseInt(calltype);
                 switch (dir) {
-                    case CallLog.Calls.OUTGOING_TYPE:
+                    case android.provider.CallLog.Calls.OUTGOING_TYPE:
                         callType = "OUTGOING";
                         break;
-                    case CallLog.Calls.INCOMING_TYPE:
+                    case android.provider.CallLog.Calls.INCOMING_TYPE:
                         callType = "INCOMING";
                         break;
-                    case CallLog.Calls.MISSED_TYPE:
+                    case android.provider.CallLog.Calls.MISSED_TYPE:
                         callType = "MISSED";
                         break;
                     default:
@@ -135,7 +128,7 @@ public class RecentFragment extends Fragment {
 
                 String dur = callduration(String.valueOf(callduration));
 
-                Calllog calllog = new Calllog(userName, num, time, callType, dur);
+                CallLog calllog = new CallLog(userName, num, time, callType, dur);
                 mList.add(calllog);
             }
             cursor.close();

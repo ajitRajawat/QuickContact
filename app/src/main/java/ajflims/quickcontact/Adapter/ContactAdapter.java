@@ -1,15 +1,20 @@
 package ajflims.quickcontact.Adapter;
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,9 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,6 +75,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         } else {
             holder.mFavorite.setChecked(false);
         }
+
     }
 
     @Override
@@ -110,6 +119,29 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                     }else{
                         new DeleteContact().execute(c);
                     }
+
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Contact contact = mList.get(getAdapterPosition());
+                    String mCurrentLookupKey;
+                    long mCurrentId;
+                    Uri mSelectedContactUri;
+
+                    mCurrentLookupKey = contact.getKey();
+                    mCurrentId = Long.parseLong(contact.getId());
+
+                    mSelectedContactUri = ContactsContract.Contacts.getLookupUri(mCurrentId,mCurrentLookupKey);
+
+                    Intent intent = new Intent(Intent.ACTION_EDIT);
+                    intent.setDataAndType(mSelectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+                    intent.putExtra("finishActivityOnSaveCompleted",true);
+                    mCtx.startActivity(intent);
+
+                    return true;
                 }
             });
         }
@@ -131,7 +163,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                     break;
                 }
             }
+            for(ajflims.quickcontact.RoomDB.Contact con : favList){
+                if(con.getName().equals(c.getName()) && con.getNumber().equals(c.getNumber())){
+                    favList.remove(con);
+                    break;
+                }
 
+            }
             ajflims.quickcontact.RoomDB.Contact contact = new ajflims.quickcontact.RoomDB.Contact();
             contact.setId(id);
             HomeActivity.myDatabase.contactDao().deleteContact(contact);
@@ -150,6 +188,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             ajflims.quickcontact.RoomDB.Contact contact = new ajflims.quickcontact.RoomDB.Contact();
             contact.setName(name);
             contact.setNumber(number);
+
+            favList.add(contact);
 
             HomeActivity.myDatabase.contactDao().addContact(contact);
             return null;

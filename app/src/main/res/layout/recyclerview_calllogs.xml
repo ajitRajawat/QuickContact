@@ -8,14 +8,14 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="35dp"
         android:id="@+id/calllog_layout"
-        android:layout_height="wrap_content">
+        android:layout_marginLeft="15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="45dp"
         android:id="@+id/calllog_profile"
-        android:layout_marginLeft="10dp"
         android:layout_gravity="center_vertical"
         android:layout_height="45dp"
         android:src="@drawable/default_profile_picture"
@@ -75,6 +75,27 @@
     </LinearLayout>
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add_contact"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/calllog_layout"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/calllog_add_contact"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/calllog_layout" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/message_user"
+        android:layout_centerVertical="true"
+        android:id="@+id/calllog_message"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp" />
 
     <View
         android:layout_width="match_parent"

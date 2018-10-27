@@ -6,7 +6,7 @@
     <string name="choosecontact">Choose from Contact</string>
     <string name="Edit_contact">Edit Contact</string>
     <string name="delete">Delete</string>
-    <string name="deleteall">Delete All</string>
+    <string name="deleteall">Unfavourite All</string>
     <string name="help">help</string>
     <string name="hold_contact_button_to_edit_contact">* Hold contact button to Edit contact</string>
     <string name="click_at_bottom_right_corner_to_add_new_quick_contact">* Click (+) at bottom right corner to add new Quick contact</string>
@@ -23,4 +23,20 @@
     <string name="callType">Call Type</string>
     <string name="SearchContact">Search Contact</string>
     <string name="_1234567890">1234567890</string>
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="asterisk">*</string>
+    <string name="zero">0</string>
+    <string name="hash">#</string>
+    <string name="dial">Dial</string>
+    <string name="backspace">&lt;=</string>
+
 </resources>
