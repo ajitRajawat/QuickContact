@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -260,10 +261,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     private void permission() {
 
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
 
             requestPermissions(new String[]{
-                    Manifest.permission.CALL_PHONE
+                    Manifest.permission.CALL_PHONE,Manifest.permission.READ_CONTACTS
             }, 10);
 
             return;

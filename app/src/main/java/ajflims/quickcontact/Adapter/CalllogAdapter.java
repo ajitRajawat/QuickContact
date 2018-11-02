@@ -123,6 +123,7 @@ public class CalllogAdapter extends RecyclerView.Adapter<CalllogAdapter.CalllogA
                     Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
                     intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
                     intent.putExtra(ContactsContract.Intents.Insert.PHONE,c.getNumber());
+                    intent.putExtra("finishActivityOnSaveCompleted",true);
                     mCtx.startActivity(intent);
                 }
             });

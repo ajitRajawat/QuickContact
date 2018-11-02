@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ajflims.quickcontact.Fragments.ContactFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="ajflims.quickcontact.Fragments.ContactFragment"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -10,5 +12,20 @@
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:id="@+id/contact_add_contact"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="90dp"
+        app:fabSize="normal"
+        android:layout_above="@+id/bottom_navigation"
+        app:rippleColor="@color/buttonColor"
+        android:src="@drawable/add_new_contact"
+        android:backgroundTint="@color/text1" />
 
 </RelativeLayout>

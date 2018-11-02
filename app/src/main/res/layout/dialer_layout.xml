@@ -45,34 +45,43 @@
     </RelativeLayout>
 
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:id="@+id/linearLayout1"
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="60dp" android:id="@+id/linearLayout1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/one"
             android:id="@+id/dialpad_one" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
+
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/two"
             android:id="@+id/dialpad_two" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
+
         <Button
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
@@ -80,35 +89,52 @@
             android:text="@string/three"
             android:id="@+id/dialpad_three" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/contactText"/>
+
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:id="@+id/linearLayout2"
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="60dp" android:id="@+id/linearLayout2"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/four"
             android:id="@+id/dialpad_four" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
+
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/five"
             android:id="@+id/dialpad_five" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
+
         <Button
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
@@ -116,74 +142,107 @@
             android:text="@string/six"
             android:id="@+id/dialpad_six" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/contactText"/>
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:id="@+id/linearLayout3"
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="60dp" android:id="@+id/linearLayout3"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/seven"
             android:id="@+id/dialpad_seven" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
+
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/eight"
             android:id="@+id/dialpad_eight" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
+
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/nine"
             android:id="@+id/dialpad_nine" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/contactText"/>
+
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:id="@+id/linearLayout4"
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="60dp" android:id="@+id/linearLayout4"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
         <Button
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textColor="@color/layoutTextColor"
             android:background="@color/back4"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/asterisk"
             android:id="@+id/dialpad_asterisk" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
 
         <Button
             android:layout_weight="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/toolbarColor"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/zero"
             android:id="@+id/dialpad_zero" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/contactText"/>
+
         <Button
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textColor="@color/layoutTextColor"
             android:background="@color/back4"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:text="@string/hash"
             android:id="@+id/dialpad_hash" />
@@ -204,8 +263,8 @@
             android:layout_gravity="center_horizontal"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/dial_pad"
             android:layout_alignParentRight="true"
             android:id="@+id/dialpad_close"

@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hold_contact_button_to_edit_contact"
+        android:text="@string/mark_contact_as_favourite_to_call_them_instantly"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
         android:layout_margin="5dp"
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/just_one_click_to_call_a_user"
+            android:text="@string/add_new_contacts_in_contact_list"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:layout_margin="5dp"
@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/click_at_bottom_right_corner_to_add_new_quick_contact"
+            android:text="@string/modify_contact_by_press_and_hold_the_contact"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:layout_margin="5dp"
@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/delete_contact_in_edit_contact_page"
+            android:text="@string/remove_all_favourite_once_in_top_right_corner"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:layout_margin="5dp"

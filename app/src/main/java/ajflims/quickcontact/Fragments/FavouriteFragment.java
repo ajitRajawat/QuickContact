@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class FavouriteFragment extends Fragment {
     private RecyclerView recyclerView;
     private FavouriteAdapter adapter;
     private List<Contact> mList;
+    private TextView mEmptyText;
 
     public FavouriteFragment() {
         // Required empty public constructor
@@ -49,6 +51,7 @@ public class FavouriteFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.favourite_recyclerview);
+        mEmptyText = view.findViewById(R.id.favourite_empty_text);
 
         mList = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
@@ -56,12 +59,7 @@ public class FavouriteFragment extends Fragment {
 
         adapter = new FavouriteAdapter(mList,getActivity());
         recyclerView.setAdapter(adapter);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mList.clear();
     }
 
     @Override
@@ -76,7 +74,13 @@ public class FavouriteFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
+            if(mList.isEmpty()){
+                recyclerView.setVisibility(View.INVISIBLE);
+                mEmptyText.setVisibility(View.VISIBLE);
+            }else{
+                recyclerView.setVisibility(View.VISIBLE);
+                mEmptyText.setVisibility(View.INVISIBLE);
+            }
             adapter.notifyDataSetChanged();
         }
 
@@ -85,25 +89,6 @@ public class FavouriteFragment extends Fragment {
 
             List<Contact> list = HomeActivity.myDatabase.contactDao().getContact();
             mList.addAll(list);
-
-            return null;
-        }
-    }
-
-     class deleteAllUser extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Toast.makeText(getContext(), "Deleted Successfully", Toast.LENGTH_SHORT).show();
-            mList.clear();
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            HomeActivity.myDatabase.contactDao().deleteAll(mList);
 
             return null;
         }

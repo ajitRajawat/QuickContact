@@ -8,10 +8,6 @@
     <string name="delete">Delete</string>
     <string name="deleteall">Unfavourite All</string>
     <string name="help">help</string>
-    <string name="hold_contact_button_to_edit_contact">* Hold contact button to Edit contact</string>
-    <string name="click_at_bottom_right_corner_to_add_new_quick_contact">* Click (+) at bottom right corner to add new Quick contact</string>
-    <string name="delete_contact_in_edit_contact_page">* Delete Contact in Edit contact Page</string>
-    <string name="just_one_click_to_call_a_user">* Just One Click to call a user</string>
     <string name="favourite">Favourite</string>
     <string name="recents">Recents</string>
     <string name="Phonebook">Phonebook</string>
@@ -38,5 +34,10 @@
     <string name="hash">#</string>
     <string name="dial">Dial</string>
     <string name="backspace">&lt;=</string>
+    <string name="no_fovourite_yet">No Favourite Yet !!!!</string>
+    <string name="mark_contact_as_favourite_to_call_them_instantly"># Mark contact as favourite to call them instantly.</string>
+    <string name="add_new_contacts_in_contact_list"># Add new contacts in contact list</string>
+    <string name="modify_contact_by_press_and_hold_the_contact"># Modify and Delete contact by press and holding the contact</string>
+    <string name="remove_all_favourite_once_in_top_right_corner"># Remove all favourite once in top right corner</string>
 
 </resources>

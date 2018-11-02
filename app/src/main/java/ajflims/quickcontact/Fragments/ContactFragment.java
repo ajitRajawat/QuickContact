@@ -1,12 +1,21 @@
 package ajflims.quickcontact.Fragments;
 
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 
 import ajflims.quickcontact.Adapter.ContactAdapter;
 import ajflims.quickcontact.HomeActivity;
+import ajflims.quickcontact.Model.CallLog;
 import ajflims.quickcontact.Model.Contact;
 import ajflims.quickcontact.R;
 
@@ -37,6 +47,7 @@ public class ContactFragment extends Fragment {
     private ContactAdapter adapter;
     private List<Contact> mList;
     private List<ajflims.quickcontact.RoomDB.Contact> favList;
+    private FloatingActionButton mNewContact;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -55,6 +66,7 @@ public class ContactFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.contact_list);
+        mNewContact = view.findViewById(R.id.contact_add_contact);
         recyclerView.setHasFixedSize(true);
         mList = new ArrayList<>();
         favList = new ArrayList<>();
@@ -63,13 +75,17 @@ public class ContactFragment extends Fragment {
         adapter = new ContactAdapter(mList,getActivity(),favList);
         recyclerView.setAdapter(adapter);
 
-        try {
-            new checkForFav().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new checkForFav().execute();
+
+        mNewContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+                intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+                intent.putExtra("finishActivityOnSaveCompleted",true);
+                startActivity(intent);
+            }
+        });
 
        // new ContactFetch().execute();
     }
@@ -137,7 +153,25 @@ public class ContactFragment extends Fragment {
     public void onStart() {
         super.onStart();
         mList.clear();
-        new ContactFetch().execute();
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+            dialog.setMessage("Please Allow Contact Permission !!");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setTitle("Contact Permission");
+            dialog.setButton("Allow", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                }
+            });
+            dialog.show();
+        } else {
+            new ContactFetch().execute();
+        }
     }
-
 }

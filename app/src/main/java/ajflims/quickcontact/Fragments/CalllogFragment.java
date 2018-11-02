@@ -2,10 +2,15 @@ package ajflims.quickcontact.Fragments;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -59,15 +64,33 @@ public class CalllogFragment extends Fragment {
         mList = new ArrayList<>();
         calllog_count = 0;
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        } else {
-            new CallLogFetch().execute();
-        }
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CalllogAdapter(mList, getActivity());
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+            AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+            dialog.setMessage("Please Allow TelePhone Permission !!");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setTitle("TelePhone Permission");
+            dialog.setButton("Allow", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                }
+            });
+            dialog.show();
+        } else {
+            new CallLogFetch().execute();
+        }
 
     }
 
